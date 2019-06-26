@@ -1,0 +1,5 @@
+*.h5
+*.csv
+*.npy
+*.pyc
+*.local

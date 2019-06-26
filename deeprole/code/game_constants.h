@@ -1,0 +1,19 @@
+#ifndef GAME_CONSTANTS_H_
+#define GAME_CONSTANTS_H_
+
+#define NUM_PLAYERS 5
+#define NUM_EVIL 2
+#define NUM_VIEWPOINTS (1 + 6 + 4 + 4)
+#define NUM_GOOD_VIEWPOINTS (1 + 6)
+#define NUM_ASSIGNMENTS 60
+#define NUM_PROPOSAL_OPTIONS 10
+#define TREMBLE_VALUE 0.01
+
+#define EVIL_WIN_PAYOFF 1.5
+#define EVIL_LOSE_PAYOFF -1.5
+#define GOOD_WIN_PAYOFF 1.0
+#define GOOD_LOSE_PAYOFF -1.0
+
+#define CFR_PLUS
+
+#endif // GAME_CONSTANTS_H_

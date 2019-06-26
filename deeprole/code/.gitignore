@@ -1,0 +1,5 @@
+.cflags
+*.o
+deeprole
+deeprole_output/
+models/*.json
