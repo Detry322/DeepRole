@@ -50,7 +50,8 @@ def load_tensorboard_held_out_loss_data(subfolder):
             BASE_DIR,
             'tensorboard',
             'held_out_loss',
-            '{}_{}'.format(subfolder, value),
+            subfolder,
+            str(value)
         ))
     return result
 
@@ -94,15 +95,6 @@ def load_bot_v_bot_games():
         with gzip.open(os.path.join(BASE_DIR, 'bot_v_bot_games.msg.gz'), 'r') as f:
             ALL_GAMES = pd.read_msgpack(f)
     return ALL_GAMES
-
-
-def lesion_load():
-    result = []
-    for filename in glob.glob(os.path.join(BASE_DIR, 'lesion', '*')):
-        with gzip.open(filename) as f:
-            result.append(pd.read_msgpack(f))
-    df = pd.concat(result)
-    return df.reset_index()
 
 
 HUMAN_GAMES = None

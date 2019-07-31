@@ -58,6 +58,9 @@ def get_dataframe():
         with open(game_file) as f:
             g = json.load(f)
 
+            if g['game_info']['winner'] not in ['Spy', 'Resistance']:
+                continue
+
             key = (
                 tuple(g['session_info']['players']),
                 g['game_info']['roomId'],
@@ -155,7 +158,7 @@ def calculate_statistics_by_role(df):
 
 def main():
     df = get_dataframe()
-    df.to_csv('human_v_bots_data.csv', index=False)
+    # df.to_csv('human_v_bots_data.csv', index=False)
     calculate_aggregate_statistics(df)
     calculate_statistics_by_role(df)
 

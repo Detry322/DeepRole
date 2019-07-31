@@ -4,6 +4,9 @@ from collections import defaultdict
 import itertools
 import functools
 from scipy.special import comb
+from joblib import Memory
+memory = Memory('/tmp/joblib', verbose=1)
+
 
 # Wellman stuff
 def filter_bot_v_bot_games(all_games, acceptable_bots):
@@ -242,3 +245,41 @@ def create_moawt(bot_games, human_games, bots):
     return df
 
 
+@memory.cache
+def moawt(bot_games, bots):
+    result = []
+    for i, bot in enumerate(bots):
+        filtered_games = filter_bot_v_bot_games(bot_games, ['Deeprole', bot])
+        by_player = convert_to_by_player(filtered_games)
+        bot = "{}_{}".format(i, bot)
+        
+        h_v_bot_role = compare_humans_and_bots(by_player, ['is_resistance'])
+        h_v_bot_overall = compare_humans_and_bots(by_player, [])
+
+        
+        for i in range(5):
+            for b in ['bot', 'human']:
+                result.extend([
+                    {
+                        'Bot': bot,
+                        'Role': 'all',
+                        'DR' : i,
+                        'b': b,
+                        'WinRate': h_v_bot_overall.loc[i]['{}_winrate'.format(b)],
+                        'b_N': h_v_bot_overall.loc[i]['{}_n'.format(b)]
+                    },
+                ])
+                for r, k in {'res':True, 'spy': False}.iteritems():
+                    result.extend([
+                        {
+                            'Bot': bot,
+                            'Role': r,
+                            'DR' : i,
+                            'b': b,
+                            'WinRate': h_v_bot_role.loc[(i, k)]['{}_winrate'.format(b)],
+                            'b_N': h_v_bot_role.loc[(i, k)]['{}_n'.format(b)]
+                        },
+                    ])
+
+    
+    return pd.DataFrame(result)
